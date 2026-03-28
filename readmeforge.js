@@ -5,6 +5,14 @@
   var screenshots = [];
   var renderTimer = null;
 
+  const inputs = document.querySelectorAll(".textInput");
+  const counts = document.querySelectorAll(".wordCount");
+  const wordCountText = document.querySelectorAll(".wordCountText");
+
+  inputs.forEach((input, index) => {
+    enableWordCount(input, counts[index], wordCountText[index]);
+  });
+
   // ── Section definitions ───────────────────────────────────────
   var SECTIONS = [
     {
@@ -491,52 +499,52 @@
       if (selectedBadges.has("license") && license !== "none")
         badges.push(
           "[![License](https://img.shields.io/badge/license-" +
-            encodeURIComponent(license) +
-            "-green.svg)](LICENSE)",
+          encodeURIComponent(license) +
+          "-green.svg)](LICENSE)",
         );
       if (selectedBadges.has("stars"))
         badges.push(
           "[![Stars](https://img.shields.io/github/stars/" +
-            ghUser +
-            "/" +
-            repoSlug +
-            "?style=social)](https://github.com/" +
-            ghUser +
-            "/" +
-            repoSlug +
-            ")",
+          ghUser +
+          "/" +
+          repoSlug +
+          "?style=social)](https://github.com/" +
+          ghUser +
+          "/" +
+          repoSlug +
+          ")",
         );
       if (selectedBadges.has("forks"))
         badges.push(
           "[![Forks](https://img.shields.io/github/forks/" +
-            ghUser +
-            "/" +
-            repoSlug +
-            "?style=social)](https://github.com/" +
-            ghUser +
-            "/" +
-            repoSlug +
-            "/fork)",
+          ghUser +
+          "/" +
+          repoSlug +
+          "?style=social)](https://github.com/" +
+          ghUser +
+          "/" +
+          repoSlug +
+          "/fork)",
         );
       if (selectedBadges.has("issues"))
         badges.push(
           "[![Issues](https://img.shields.io/github/issues/" +
-            ghUser +
-            "/" +
-            repoSlug +
-            ")](https://github.com/" +
-            ghUser +
-            "/" +
-            repoSlug +
-            "/issues)",
+          ghUser +
+          "/" +
+          repoSlug +
+          ")](https://github.com/" +
+          ghUser +
+          "/" +
+          repoSlug +
+          "/issues)",
         );
       if (selectedBadges.has("prs"))
         badges.push(
           "[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/" +
-            ghUser +
-            "/" +
-            repoSlug +
-            "/pulls)",
+          ghUser +
+          "/" +
+          repoSlug +
+          "/pulls)",
         );
       if (selectedBadges.has("build"))
         badges.push(
@@ -921,10 +929,10 @@
       "</span>" +
       (right
         ? '<span class="gh-badge-right" style="background:' +
-          color +
-          '">' +
-          right +
-          "</span>"
+        color +
+        '">' +
+        right +
+        "</span>"
         : "") +
       "</span>"
     );
@@ -1050,6 +1058,82 @@
   }
   window.copyMarkdown = copyMarkdown;
 
+  function closeDownloadModal() {
+    var overlay = document.getElementById("downloadModalOverlay");
+    if (overlay) overlay.classList.add("hidden");
+  }
+  window.closeDownloadModal = closeDownloadModal;
+
+  function downloadPDF() {
+    if (!currentMd) {
+      toast("Nothing to download yet!");
+      return;
+    }
+
+    toast("Opening print dialog...");
+
+    var printIframe = document.createElement('iframe');
+    printIframe.style.position = 'fixed';
+    printIframe.style.top = '-9999px';
+    printIframe.style.left = '-9999px';
+    printIframe.style.width = '0';
+    printIframe.style.height = '0';
+    printIframe.style.border = '0';
+    document.body.appendChild(printIframe);
+
+    var doc = printIframe.contentWindow.document;
+    var htmlContent = md2html(currentMd);
+
+    doc.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>README Preview</title>
+          <link rel="stylesheet" href="readmeforge.css">
+          <style>
+            :root {
+              --bg: #ffffff;
+              --text: #000000;
+              --border: #e2e8f0;
+              --surface: #ffffff;
+            }
+            body { 
+              background: white !important; 
+              color: black !important; 
+              padding: 40px !important;
+              font-family: sans-serif;
+            }
+            .gh-preview { 
+              max-width: 900px; 
+              margin: 0 auto; 
+            }
+            @media print {
+              body { padding: 0 !important; }
+              .gh-preview { width: 100%; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="gh-preview">
+            ${htmlContent}
+          </div>
+          <script>
+            window.onload = function() {
+              setTimeout(function() {
+                window.print();
+                setTimeout(function() {
+                  window.frameElement.parentNode.removeChild(window.frameElement);
+                }, 1000);
+              }, 500);
+            };
+          </script>
+        </body>
+        </html>
+      `);
+    doc.close();
+  }
+  window.downloadPDF = downloadPDF;
+
   function downloadMd() {
     if (!currentMd) {
       toast("Nothing to download yet!");
@@ -1065,6 +1149,7 @@
     toast("✓ README.md downloaded!");
   }
   window.downloadMd = downloadMd;
+
 
   function resetAll() {
     document
@@ -1095,6 +1180,7 @@
     SECTIONS.forEach(function (s) {
       sectionState[s.id] = s.default;
     });
+    counts.forEach((count) => count.textContent = '0')
     buildSectionToggles();
     updateSectionCount();
     scheduleRender();
@@ -1120,6 +1206,25 @@
     var el = document.getElementById(id);
     if (el) el.value = val;
   }
+
+  function enableWordCount(inputEl, countEl, wordCountText) {
+    inputEl.addEventListener("input", () => {
+      const text = inputEl.value.trim();
+
+      let words = text ? text.split(/\s+/) : [];
+
+      // Filter out unwanted tokens
+      words = words.filter(word => word !== "###" && word !== "-");
+
+      countEl.textContent = words.length;
+      if (words.length === 1) {
+        wordCountText.textContent = "Word";
+      } else {
+        wordCountText.textContent = "Words";
+      }
+    });
+  }
+
 
   init();
 })();
