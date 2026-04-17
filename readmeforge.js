@@ -969,8 +969,8 @@
     if (!panel) return;
 
     var score = quality.score;
-    var circumference = 100; // dasharray total
-    var fillAmount = score; // percentage directly as dasharray value
+    var maxPercentage = 100; // stroke-dasharray uses a 0–100 percentage scale
+    var fillAmount = score;
 
     // Color tier
     var color, labelText, subText;
@@ -1008,7 +1008,7 @@
     label.textContent = labelText;
     label.style.color = color;
 
-    ringFill.setAttribute("stroke-dasharray", fillAmount + " " + (circumference - fillAmount));
+    ringFill.setAttribute("stroke-dasharray", fillAmount + " " + (maxPercentage - fillAmount));
     ringFill.style.stroke = color;
 
     ringNum.textContent = score;
