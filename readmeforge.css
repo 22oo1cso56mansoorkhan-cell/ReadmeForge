@@ -1,5 +1,5 @@
 :root {
-  /* App Variables */
+  /* Dark Mode (Default) */
   --bg: #05070e;
   --surface: #0a0f1a;
   --surface2: #111827;
@@ -21,6 +21,47 @@
   --grad-cyan: #22d3ee;
   --grad-blue: #6366f1;
   --grad-purple: #c084fc;
+}
+
+/* Light Mode */
+body.light-mode {
+  --bg: #f8f9fa;
+  --surface: #ffffff;
+  --surface2: #f3f4f6;
+  --surface3: #e5e7eb;
+  --border: #e5e7eb;
+  --border2: #d1d5db;
+  --accent: #0284c7;
+  --accent2: #6366f1;
+  --green: #059669;
+  --yellow: #d97706;
+  --red: #dc2626;
+  --text: #111827;
+  --muted: #6b7280;
+  --muted2: #374151;
+
+  /* Hero Variables for Light Mode */
+  --hero-bg: #ffffff;
+  --hero-text: #111827;
+  --grad-cyan: #0891b2;
+  --grad-blue: #3b82f6;
+  --grad-purple: #7c3aed;
+}
+
+body.light-mode::before {
+  background-image:
+    radial-gradient(circle at 20% 20%,
+      rgba(2, 132, 199, 0.08) 0%,
+      transparent 50%),
+    radial-gradient(circle at 80% 80%,
+      rgba(99, 102, 241, 0.08) 0%,
+      transparent 50%);
+}
+
+body.light-mode::after {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
 }
 
 * {
@@ -487,6 +528,34 @@ body::after {
 .hbtn.primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(56, 189, 248, 0.5);
+}
+
+/* ── Dark Mode Toggle ── */
+.theme-toggle {
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  border: 1px solid var(--border2);
+  background: var(--surface2);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+}
+
+.theme-toggle:hover {
+  background: var(--surface3);
+  border-color: var(--accent);
+  transform: scale(1.05) rotate(15deg);
+}
+
+.theme-toggle:active {
+  transform: scale(0.95);
 }
 
 /* ── MAIN LAYOUT ── */
@@ -1074,6 +1143,12 @@ select option {
   font-size: 15px;
   line-height: 1.7;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+body.light-mode .gh-preview {
+  background: #ffffff;
+  color: #24292f;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
 }
 
 .gh-preview h1 {
