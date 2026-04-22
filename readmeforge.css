@@ -1805,6 +1805,7 @@ select option {
   padding: 24px;
   background: var(--bg);
 }
+.spinner {
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }
@@ -2079,4 +2080,117 @@ select option {
 
 .autosave-status.visible {
   opacity: 1;
+}
+/* ── PRINT MEDIA STYLES ── */
+@media print {
+
+  /* Hide everything except the preview panel */
+  .top-nav {
+    display: none !important;
+  }
+
+  .hero-content {
+    display: none !important;
+  }
+
+  .header {
+    display: none !important;
+  }
+
+  .sidebar {
+    display: none !important;
+  }
+
+  .editor {
+    display: none !important;
+  }
+
+  /* Show the preview panel full width */
+  .preview {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    position: static !important;
+    border: none !important;
+    background: white !important;
+  }
+
+  /* Hide the preview header (tabs + buttons) */
+  .preview-header {
+    display: none !important;
+  }
+
+  /* Hide the quality score panel */
+  .quality-panel {
+    display: none !important;
+  }
+
+  /* Make the preview body fully visible */
+  .preview-body {
+    overflow: visible !important;
+    padding: 0 !important;
+    background: white !important;
+    color: black !important;
+  }
+
+  /* Clean up the rendered markdown */
+  .gh-preview {
+    background: white !important;
+    color: black !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  pre {
+    border: 1px solid #e2e8f0 !important;
+    background: #f8fafc !important;
+    color: black !important;
+  }
+
+  code {
+    border: 1px solid #e2e8f0 !important;
+    background: #f8fafc !important;
+    color: black !important;
+  }
+
+  pre {
+    page-break-inside: avoid;
+  }
+
+  blockquote {
+    page-break-inside: avoid;
+  }
+
+  table {
+    page-break-inside: avoid;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+
+  a {
+    text-decoration: none !important;
+    color: black !important;
+  }
+  /* Hide the hero/landing section */
+  .hero-content {
+    display: none !important;
+  }
+
+  /* Hide toast notifications */
+  .toast {
+    display: none !important;
+  }
+  /* Hide hero section and scroll button */
+  .hero-wrapper {
+    display: none !important;
+  }
+
+  .scroll-action {
+    display: none !important;
+  }
 }
