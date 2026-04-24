@@ -229,9 +229,15 @@ body::after {
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
 }
 
+body.light-mode .hero-title {
+  background: none;
+  color: #0f172a;
+  -webkit-text-fill-color: currentColor;
+}
+
 .scroll-action {
   position: absolute;
-  bottom: 50px;
+  bottom: 36px;
   z-index: 50;
   display: flex;
   justify-content: center;
