@@ -24,7 +24,7 @@
         README
         <!-- SVG 4-Pointed Sparkle Star -->
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" fill="white" />
+          <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" fill="currentColor" />
         </svg>
         FORGE
       </div>
@@ -106,6 +106,9 @@
         <button class="hbtn" onclick="clearSavedData()">🗑 Clear Saved</button>
         <button class="hbtn" onclick="resetAll()">↺ Reset</button>
         <button class="hbtn" onclick="copyMarkdown()">Copy MD</button>
+        <button class="theme-toggle" id="themeToggle" title="Toggle dark/light mode">
+          <span id="themeIcon">🌙</span>
+        </button>
         <button class="hbtn primary" id="modalPrintBtn" onclick="downloadPDF()">
           ⬇ Download PDF
         </button>
